@@ -48,9 +48,9 @@ class Trojan:
 		icons_directory = os.path.dirname(os.path.realpath(__file__)) + "/icons"
 		if icon == None:
 			icon = icons_directory + "/" + file_type + ".ico"
-		
+		print(icon)
 		if not os.path.isfile(icon) :
-			print("[-] Can't find icon at " + self.icon)
+			print("[-] Can't find icon at " + icon)
 			print("[-] Using generaic icon.")
 			icon = icons_directory + "/generic.ico"
 		return icon
